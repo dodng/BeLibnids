@@ -4,8 +4,11 @@ It is a platform to use multiprocess to combine dpdk and libnids together to sup
 
 ##0.What is ?
   a:It is a platform to use multiprocess to recevie and process packets from one or more ports.
+  
   b:It use RSS queue and symmetric hash to Guarantee one tcp stream just be processed by only one process.
+  
   c:It use multiprocess to solve the libnids resources Conflict.
+  
   d:I work it in CentOS 6.4 and 6.5,you have all codes,of course you can change.
 
 ##1.How to compile ?
