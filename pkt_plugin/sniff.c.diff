@@ -1,0 +1,117 @@
+14d13
+< #include <string.h>
+20,22d18
+< #define UNUSED(x)      (void)(x)
+< extern int g_proc_id;
+< extern int g_port;
+25,26d20
+< adres (struct tuple4 addr);
+< char *
+39,40d32
+< do_log (char *adres_txt, char *data, int ile);
+< void
+49,50d40
+< sniff_callback (struct tcp_stream *a_tcp, void **this_time_not_needed);
+< void
+53,83c43,72
+< 	int dest;
+< 	UNUSED(this_time_not_needed);
+< 	if (a_tcp->nids_state == NIDS_JUST_EST)
+< 	{
+< 		dest = a_tcp->addr.dest;
+< 		if (dest == 21 || dest == 23 || dest == 110 || dest == 143 || dest == 513)
+< 			a_tcp->server.collect++;
+< 		return;
+< 	}
+< 	if (a_tcp->nids_state != NIDS_DATA)
+< 	{
+< 		// seems the stream is closing, log as much as possible
+< 		do_log (adres (a_tcp->addr), a_tcp->server.data,
+< 				a_tcp->server.count - a_tcp->server.offset);
+< 		return;
+< 	}
+< 	if (a_tcp->server.count - a_tcp->server.offset < LOG_MAX)
+< 	{
+< 		// we haven't got enough data yet; keep all of it
+< 		nids_discard (a_tcp, 0);
+< 		return;
+< 	}
+< 
+< 	// enough data  
+< 	do_log (adres (a_tcp->addr), a_tcp->server.data, LOG_MAX);
+< 
+< 	// Now procedure sniff_callback doesn't want to see this stream anymore.
+< 	// So, we decrease all the "collect" fields we have previously increased.
+< 	// If there were other callbacks following a_tcp stream, they would still
+< 	// receive data
+< 	a_tcp->server.collect--;
+---
+>   int dest;
+>   if (a_tcp->nids_state == NIDS_JUST_EST)
+>     {
+>       dest = a_tcp->addr.dest;
+>       if (dest == 21 || dest == 23 || dest == 110 || dest == 143 || dest == 513)
+> 	a_tcp->server.collect++;
+>       return;
+>     }
+>   if (a_tcp->nids_state != NIDS_DATA)
+>     {
+>       // seems the stream is closing, log as much as possible
+>       do_log (adres (a_tcp->addr), a_tcp->server.data,
+> 	      a_tcp->server.count - a_tcp->server.offset);
+>       return;
+>     }
+>   if (a_tcp->server.count - a_tcp->server.offset < LOG_MAX)
+>     {
+>       // we haven't got enough data yet; keep all of it
+>       nids_discard (a_tcp, 0);
+>       return;
+>     }
+>     
+>   // enough data  
+>   do_log (adres (a_tcp->addr), a_tcp->server.data, LOG_MAX);
+> 
+>   // Now procedure sniff_callback doesn't want to see this stream anymore.
+>   // So, we decrease all the "collect" fields we have previously increased.
+>   // If there were other callbacks following a_tcp stream, they would still
+>   // receive data
+>   a_tcp->server.collect--;
+86,87c75,77
+< int test_main (void);
+< int test_main (void)
+---
+> 
+> int
+> main ()
+89,104c79,92
+<         char file_name[32] = {0};
+<         snprintf(file_name,sizeof(file_name),"./logfile[%d:%d]",g_port,g_proc_id);
+< 		
+< 	logfd = open (file_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+< 	if (logfd < 0)
+< 	{
+< 		perror ("opening ./logfile:");
+< 		exit (1);
+< 	}
+< 	if (!nids_init ())
+< 	{
+< 		fprintf (stderr, "%s\n", nids_errbuf);
+< 		exit (1);
+< 	}
+< 	nids_register_tcp (sniff_callback);
+< 	return 0;
+---
+>   logfd = open ("./logfile", O_WRONLY | O_CREAT | O_TRUNC, 0600);
+>   if (logfd < 0)
+>     {
+>       perror ("opening ./logfile:");
+>       exit (1);
+>     }
+>   if (!nids_init ())
+>     {
+>       fprintf (stderr, "%s\n", nids_errbuf);
+>       exit (1);
+>     }
+>   nids_register_tcp (sniff_callback);
+>   nids_run ();
+>   return 0;

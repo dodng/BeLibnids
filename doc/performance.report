@@ -1,0 +1,9 @@
+dns random request ip,packet len 73 bytes
+RSS queue num | receive packets(PPS)  | io forward(PPS) | ip_frag plugin count(PPS)
+RSS 16 queue  | 12886842              | 9384341         | no test
+RSS 8 queue   | 12886842              | 11270268        | 11330371
+RSS 4 queue   | 12886635              | 12858855        | 12886300
+RSS 2 queue   | 12886884              | 12868428        | 12886268
+RSS 1 queue   | 12886771              | 12885382        | 7738879
+
+2 port * RSS 8 queue | 12886842 * 2   | no test         | 11394611 * 2
