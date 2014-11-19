@@ -11,7 +11,7 @@ It is a platform to use multiprocess to combine dpdk and libnids together to sup
   
   d:I work it in CentOS 6.4 and 6.5,you have all codes,of course you can change.
   
-  ###Technical Architecture
+###Technical Architecture
 
 ![architecture](https://github.com/dodng/BeLibnids/blob/master/doc/Technical_Architecture.png)
 
@@ -41,8 +41,8 @@ It is a platform to use multiprocess to combine dpdk and libnids together to sup
  and use cpu 2,3,4,5,6,7,8,9.(The cpu numbers is equal with queue_num)
  The performance in queue numbers or port numbers is in doc/performance.report
  
- ###performance
- ###dns random request ip,every packet len 73 bytes.column:PPS(packets per second)
+###performance
+###dns random request ip,every packet len 73 bytes.column:PPS(packets per second)
 
 ![performance](https://github.com/dodng/BeLibnids/blob/master/doc/performance.png)
 
